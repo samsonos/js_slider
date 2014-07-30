@@ -18,8 +18,16 @@ var SamsonJSSlider =
 		{
 			//Слайдер
 			var slider = this;
-			slider.css('overflow', 'hidden');
-			slider.css('position', 'relative');
+
+            // Update overflow only if it is not set yet
+            if(slider.css('overflow') == '' || slider.css('overflow') == 'undefined' || slider.css('overflow-y') == '' || slider.css('overflow-y') == 'undefined') {
+                slider.css('overflow', 'hidden');
+            }
+
+            // Update position only if it is not set yet
+			if(slider.css('position') == '' || slider.css('position') == 'undefined') {
+                slider.css('position', 'relative');
+            }
 	
 			// Ширина слайда
 			var slideWidth = slider.width();
