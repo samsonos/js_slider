@@ -10,6 +10,7 @@ var SamsonJSSlider =
 		var rbtn = options.rightButton ? options.rightButton : s('.arrow.arrow-right');	
 		var stars = options.starsBlock ? options.starsBlock : null;
 		var middleHandler = options.middleHandler ? options.middleHandler : null;
+        var autoScroll = !options.autoScroll ? options.autoScroll : true;
 		var timer;
 		
 		// Если есть выборка элементов DOM
@@ -93,7 +94,10 @@ var SamsonJSSlider =
 									s( s('li', stars).elements[ id ] ).addClass('active');
 								}
 								if(options.slideHandler)options.slideHandler(slides.elements[ id ], id);
-								clearTimeout(timer);setTimer();
+								clearTimeout(timer);
+                                if (autoScroll) {
+                                    setTimer();
+                                }
 								
 								c_busy = false;
 							}, 50,{'middle': middleHandler}, id);
@@ -120,7 +124,9 @@ var SamsonJSSlider =
 				});
 				if (stars){
 					s( s('li', stars).elements[ 0 ] ).addClass('active');
+
 					s('li', stars).click(function(li_obj){
+                        s.trace(c_busy);
 						if(!c_busy)
 						{
 							dslide = parseInt(li_obj.a('slide_id'));
@@ -129,8 +135,6 @@ var SamsonJSSlider =
 						}
 					});
 				};
-				
-				
 				
 				var setTimer = function(){
 					timer = setTimeout(function()
@@ -144,12 +148,10 @@ var SamsonJSSlider =
 										
 							}, 3000);
 				};
-				
-				setTimer();
 
-
-
-
+				if (autoScroll) {
+                    setTimer();
+                }
 			}			
 		}
 		
