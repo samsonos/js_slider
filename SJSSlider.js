@@ -11,6 +11,21 @@ var SamsonJSSlider =
 		var stars = options.starsBlock ? options.starsBlock : null;
 		var middleHandler = options.middleHandler ? options.middleHandler : null;
         var autoScroll = !options.autoScroll ? options.autoScroll : true;
+
+        // Set default scroll speed
+        var scrollSpeed = 300;
+        if (options.scrollSpeed !== undefined) {
+            // Set users scroll speed
+            scrollSpeed = options.scrollSpeed;
+        }
+
+        // Set default scroll interval - 3 sec
+        var scrollInterval = 3000;
+        if (options.scrollInterval !== undefined) {
+            // Set users scroll interval
+            scrollInterval = options.scrollInterval;
+        }
+
 		var timer;
 		
 		// Если есть выборка элементов DOM
@@ -82,7 +97,7 @@ var SamsonJSSlider =
 						point = 0;
 					}
 					if(options.startHandler)options.startHandler(slides.elements[ id ], id);
-					myanimate(s('ul', slider), point, 300,
+					myanimate(s('ul', slider), point, scrollSpeed,
 							function()
 							{
 								//s.trace('end');
@@ -154,7 +169,7 @@ var SamsonJSSlider =
 									goToSlide(current, 1);									
 								}
 										
-							}, 3000);
+							}, scrollInterval);
 				};
 
 				if (autoScroll) {
