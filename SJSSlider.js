@@ -69,10 +69,19 @@ var SamsonJSSlider =
 			// Если в указанном контейнере вообще есть картинки
 			if( slidesCount )
 			{
-				if(stars) for ( var int = 0; int < slidesCount; int++) {
-					var star_li = '<li slide_id="'+int+'"></li>';
-					stars.append(s(star_li));
-				}
+				if(stars) {
+                    // If there are stars
+                    var existingStars = s('li', stars);
+                    // Set their attributes, but don't create new one
+                    for (var eStarsCounter = 0; eStarsCounter < existingStars.length; eStarsCounter++) {
+                        existingStars.elements[eStarsCounter].DOMElement.setAttribute('slide_id', eStarsCounter.toString());
+                    }
+
+                    for (var int = eStarsCounter; int < slidesCount; int++) {
+                        var star_li = '<li slide_id="' + int + '"></li>';
+                        stars.append(s(star_li));
+                    }
+                }
 				slides.elements[ 0 ].css('left', slideWidth+'px');
 
 				var current = 0;
