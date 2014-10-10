@@ -52,7 +52,7 @@ var SamsonJSSlider =
 			var slideHeight = slider.height();
 
 			// Коллекция слайдов
-			var slides = s('li',slider);
+			var slides = s('.sjs-slide',slider);
 
 			slides.each(function(li_obj){
 				li_obj.css('display', 'block');
@@ -62,9 +62,9 @@ var SamsonJSSlider =
 				li_obj.height(slideHeight);
 			});
 
-			s('ul', slider).css('list-style','none');
-			s('ul', slider).css('position','relative');
-			s('ul', slider).height(slideHeight);
+			s('.sjs-slider', slider).css('list-style','none');
+			s('.sjs-slider', slider).css('position','relative');
+			s('.sjs-slider', slider).height(slideHeight);
 
 			// Максимальное значение скрола
 			var slidesCount = slides.length;
@@ -100,8 +100,8 @@ var SamsonJSSlider =
 
 				var c_busy = false;
 
-				s('ul', slider).css('width', slideWidth*3+'px');
-				s('ul', slider).css('left', -slideWidth+'px');
+				s('.sjs-slider', slider).css('width', slideWidth*3+'px');
+				s('.sjs-slider', slider).css('left', -slideWidth+'px');
 
 				var goToSlide = function(id, direction)
 				{
@@ -118,7 +118,7 @@ var SamsonJSSlider =
 						point = 0;
 					}
 					if(options.startHandler)options.startHandler(slides.elements[ id ], id);
-					myanimate(s('ul', slider), point, scrollSpeed,
+					myanimate(s('.sjs-slider', slider), point, scrollSpeed,
 							function()
 							{
 								//s.trace('end');
@@ -133,7 +133,7 @@ var SamsonJSSlider =
                                     s( slides.elements[ ind ] ).css('left', slideWidth+slideWidth*i+'px');
                                 }
 
-								s('ul', slider).css('left', -slideWidth+'px');
+								s('.sjs-slider', slider).css('left', -slideWidth+'px');
 
 								if(stars){
 									s('li', stars).each(function(star_obj){
