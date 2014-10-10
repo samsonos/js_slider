@@ -2,14 +2,14 @@
 
 > Generic javascript carousel slider
 
-The content of slider must be located in ```<ul>``` element, wrapped by parent element:
+The content of slider must be located in ```< class="sjs-slider">``` element, wrapped by parent element:
 
 ```html
 <div class="sliderContainer">
-    <ul class="sliderInner">
-        <li>slide1</li>
-        <li>slide2</li>
-        <li>slide3</li>
+    <ul class="sjs-slider">
+        <li class="sjs-slide">slide1</li>
+        <li class="sjs-slide">slide2</li>
+        <li class="sjs-slide">slide3</li>
     </ul>
 </div>
 ```
@@ -35,7 +35,7 @@ The module has a list of parameters which could be set while adding
 
 ## The width and number of slides 
 
-Module defines width of slide on the basis of general width of parent ```<ul>``` element and number
+Module defines width of slide on the basis of general width of parent ```< class="sjs-slider">``` element and number
 of displayed elements (parameter num). The width of the slide will be divided equally into a number
 of displayed elements. Therefore you should exactly set width of a block **sliderContainer** in styles.  
 
@@ -47,12 +47,12 @@ html
 ```html
 <div class="arrow-left"></div>
 <div class="sliderContainer">
-    <ul class="sliderInner">
-        <li>slide1</li>
-        <li>slide2</li>
-        <li>slide3</li>
-	    <li>slide4</li>
-        <li>slide5</li>
+    <ul class="sjs-slider">
+        <li class="sjs-slide">slide1</li>
+        <li class="sjs-slide">slide2</li>
+        <li class="sjs-slide">slide3</li>
+        <li class="sjs-slide">slide4</li>
+        <li class="sjs-slide">slide5</li>
     </ul>
 </div>
 <div class="arrow-left"></div>
