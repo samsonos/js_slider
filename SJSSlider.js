@@ -178,7 +178,7 @@ var SamsonJSSlider =
 
 					s('li', stars).click(function(li_obj){
                         s.trace(c_busy);
-						if(!c_busy)
+						if(!c_busy && !li_obj.hasClass('active'))
 						{
 							dslide = parseInt(li_obj.a('slide_id'));
 							if( current < dslide ) {current = dslide; goToSlide(current, 1);}
