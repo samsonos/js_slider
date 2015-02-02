@@ -5,9 +5,10 @@ var SamsonJSSlider =
 {
 	slider : function( options )
 	{
+        var sliderParent = this.parent();
 		if(!options) options = {};
-		var lbtn = options.leftButton ? options.leftButton : s('.arrow-left');
-		var rbtn = options.rightButton ? options.rightButton : s('.arrow-right');
+		var lbtn = options.leftButton ? options.leftButton : s('.arrow-left', sliderParent);
+		var rbtn = options.rightButton ? options.rightButton : s('.arrow-right', sliderParent);
 		var stars = options.starsBlock ? options.starsBlock : null;
 		var middleHandler = options.middleHandler ? options.middleHandler : null;
         var autoScroll = !options.autoScroll ? options.autoScroll : true;
@@ -58,8 +59,10 @@ var SamsonJSSlider =
 				li_obj.css('display', 'block');
 				li_obj.css('position', 'absolute');
 				li_obj.css('top', '0px');
-				li_obj.width(slideWidth);
-				li_obj.height(slideHeight);
+                if (num < 2) {
+                    li_obj.width(slideWidth);
+                    li_obj.height(slideHeight);
+                }
 			});
 
 			s('.sjs-slider', slider).css('list-style','none');
@@ -298,10 +301,3 @@ var SamsonJSSlider =
 
 // Добавим плагин к SamsonJS
 SamsonJS.extend( SamsonJSSlider );
-
-
-
-
-
-
-
