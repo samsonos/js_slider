@@ -86,7 +86,7 @@ var SamsonJSSlider =
 
                     for (var int = eStarsCounter; int < slidesCount; int++) {
                         var star_li = '<li slide_id="' + int + '">';
-                        if (slides.elements[int].a('thumbnail') != undefined) {
+                        if (slides.elements[int].DOMElement.hasAttribute('thumbnail')) {
                             star_li += '<img src="' + slides.elements[int].a('thumbnail') + '">';
                         }
                         star_li += '</li>';
