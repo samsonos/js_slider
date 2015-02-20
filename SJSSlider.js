@@ -11,6 +11,7 @@ var SamsonJSSlider =
 		var rbtn = options.rightButton ? options.rightButton : s('.arrow-right', sliderParent);
 		var stars = options.starsBlock ? options.starsBlock : null;
 		var middleHandler = options.middleHandler ? options.middleHandler : null;
+		var startFrom = options.startFrom ? options.startFrom : null;
         var autoScroll = !options.autoScroll ? options.autoScroll : true;
         // num - количество отображаемых элементов в слайдере, если листание происходит по одному элементу.
         var num = options.num ? options.num : 1;
@@ -84,7 +85,11 @@ var SamsonJSSlider =
                     }
 
                     for (var int = eStarsCounter; int < slidesCount; int++) {
-                        var star_li = '<li slide_id="' + int + '"></li>';
+                        var star_li = '<li slide_id="' + int + '">';
+                        if (slides.elements[int].a('thumbnail') != undefined) {
+                            star_li += '<img src="' + slides.elements[int].a('thumbnail') + '">';
+                        }
+                        star_li += '</li>';
                         stars.append(s(star_li));
                     }
                 }
@@ -180,7 +185,6 @@ var SamsonJSSlider =
 					s( s('li', stars).elements[ 0 ] ).addClass('active');
 
 					s('li', stars).click(function(li_obj){
-                        s.trace(c_busy);
 						if(!c_busy && !li_obj.hasClass('active'))
 						{
 							dslide = parseInt(li_obj.a('slide_id'));
@@ -293,6 +297,11 @@ var SamsonJSSlider =
 				}, animation_timer );
 
 		};
+
+        if (startFrom && startFrom != 0) {
+            goToSlide(startFrom, 1);
+            current = startFrom;
+        }
 
 		// Вернем указатель на себя
 		return this;
