@@ -15,6 +15,7 @@ var SamsonJSSlider =
         var autoScroll = !options.autoScroll ? options.autoScroll : true;
         // num - количество отображаемых элементов в слайдере, если листание происходит по одному элементу.
         var num = options.num ? options.num : 1;
+        var keyNavigation = options.keyNavigation ? options.keyNavigation : null;
 
         // Set default scroll speed
         var scrollSpeed = 300;
@@ -159,6 +160,29 @@ var SamsonJSSlider =
 								c_busy = false;
 							}, 50,{'middle': middleHandler}, id);
 				};
+
+				if (keyNavigation) {
+		                    s('html').keydown(function (e) {
+		                        if (event.keyCode == 37) {
+		                            if (!c_busy) {
+		                                if (current < slidesCount - 1) current++;
+		                                else current = 0;
+		
+		                                goToSlide(current, 1);
+		                            }
+		                        }
+		                        if (event.keyCode == 39) {
+		                            {
+		                                if (!c_busy) {
+		                                    if (current > 0) current--;
+		                                    else current = slidesCount - 1;
+		
+		                                    goToSlide(current, 0);
+		                                }
+		                            }
+		                        }
+		                    });
+		                }
 
 				if (rbtn)rbtn.click( function( btn )
 				{
