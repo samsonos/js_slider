@@ -181,6 +181,32 @@ var SamsonJSSlider =
 						goToSlide(current, 0);
 					}
 				});
+
+                var lastTouchX;
+                var currentTouchX;
+
+                this.DOMElement.addEventListener("touchstart", function(e) {
+                    lastTouchX = parseInt(e.changedTouches[0].pageX);
+                }, false);
+
+                this.DOMElement.addEventListener("touchend", function(e) {
+                    currentTouchX = parseInt(e.changedTouches[0].pageX);
+
+                    if (currentTouchX > lastTouchX) {
+                        if (!c_busy) {
+                            if( current > 0 ) current--;
+                            else current = slidesCount - 1;
+                            goToSlide(current, 0);
+                        }
+                    } else if(currentTouchX < lastTouchX){
+                        if (!c_busy) {
+                            if( current < slidesCount - 1 ) current++;
+                            else current = 0;
+                            goToSlide(current, 1);
+                        }
+                    }
+                }, false);
+
 				if (stars){
 					s( s('li', stars).elements[ 0 ] ).addClass('active');
 
@@ -303,7 +329,7 @@ var SamsonJSSlider =
             current = startFrom;
         }
 
-		// Вернем указатель на себя
+        // Вернем указатель на себя
 		return this;
 	}
 };
