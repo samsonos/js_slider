@@ -64,6 +64,9 @@ css
   overflow: hidden;
   width: 1008px;
 }
+.sliderContainer li {
+  overflow: hidden;
+}
 ```
 js
 ```js
