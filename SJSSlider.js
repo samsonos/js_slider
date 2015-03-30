@@ -216,13 +216,13 @@ var SamsonJSSlider =
                 this.DOMElement.addEventListener("touchend", function(e) {
                     currentTouchX = parseInt(e.changedTouches[0].pageX);
 
-                    if (currentTouchX > lastTouchX) {
+                    if (currentTouchX - lastTouchX > 100) {
                         if (!c_busy) {
                             if( current > 0 ) current--;
                             else current = slidesCount - 1;
                             goToSlide(current, 0);
                         }
-                    } else if(currentTouchX < lastTouchX){
+                    } else if(lastTouchX - currentTouchX > 100){
                         if (!c_busy) {
                             if( current < slidesCount - 1 ) current++;
                             else current = 0;
