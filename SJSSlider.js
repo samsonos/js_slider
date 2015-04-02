@@ -63,10 +63,8 @@ var SamsonJSSlider =
 				li_obj.css('display', 'block');
 				li_obj.css('position', 'absolute');
 				li_obj.css('top', '0px');
-                if (num < 2) {
-                    li_obj.width(slideWidth);
-                    li_obj.height(slideHeight);
-                }
+                li_obj.width(slideWidth);
+                li_obj.height(slideHeight);
 			});
 
 			s('.sjs-slider', slider).css('list-style','none');
