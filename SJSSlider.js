@@ -13,9 +13,10 @@ var SamsonJSSlider =
 		var middleHandler = options.middleHandler ? options.middleHandler : null;
 		var startFrom = options.startFrom ? options.startFrom : null;
         var autoScroll = !options.autoScroll ? options.autoScroll : true;
+        var loopScroll = options.loopScroll !== undefined ? options.loopScroll : true;
         // num - количество отображаемых элементов в слайдере, если листание происходит по одному элементу.
         var num = options.num ? options.num : 1;
-        var keyNavigation = options.keyNavigation ? options.keyNavigation : null;
+        var touchAble = true;
 
         // Set default scroll speed
         var scrollSpeed = 300;
@@ -61,15 +62,19 @@ var SamsonJSSlider =
 				li_obj.css('display', 'block');
 				li_obj.css('position', 'absolute');
 				li_obj.css('top', '0px');
-                
+                if (num < 2) {
                     li_obj.width(slideWidth);
                     li_obj.height(slideHeight);
-                
+                }
 			});
 
 			s('.sjs-slider', slider).css('list-style','none');
 			s('.sjs-slider', slider).css('position','relative');
 			s('.sjs-slider', slider).height(slideHeight);
+
+            if (lbtn !== undefined && !loopScroll) {
+                lbtn.hide();
+            }
 
 			// Максимальное значение скрола
 			var slidesCount = slides.length;
@@ -159,30 +164,24 @@ var SamsonJSSlider =
 
 								c_busy = false;
 							}, 50,{'middle': middleHandler}, id);
+
+                    checkArrows();
 				};
 
-				if (keyNavigation) {
-		                    s('html').keydown(function (e) {
-		                        if (event.keyCode == 37) {
-		                            if (!c_busy) {
-		                                if (current < slidesCount - 1) current++;
-		                                else current = 0;
-		
-		                                goToSlide(current, 1);
-		                            }
-		                        }
-		                        if (event.keyCode == 39) {
-		                            {
-		                                if (!c_busy) {
-		                                    if (current > 0) current--;
-		                                    else current = slidesCount - 1;
-		
-		                                    goToSlide(current, 0);
-		                                }
-		                            }
-		                        }
-		                    });
-		                }
+                var checkArrows = function() {
+                    if (!loopScroll && lbtn !== undefined && rbtn !== undefined) {
+                        if (current == slidesCount -1) {
+                            rbtn.hide();
+                        } else {
+                            rbtn.show();
+                        }
+                        if (current == 0) {
+                            lbtn.hide();
+                        } else {
+                            lbtn.show();
+                        }
+                    }
+                };
 
 				if (rbtn)rbtn.click( function( btn )
 				{
@@ -206,30 +205,50 @@ var SamsonJSSlider =
 					}
 				});
 
-                var lastTouchX;
-                var currentTouchX;
-
-                this.DOMElement.addEventListener("touchstart", function(e) {
-                    lastTouchX = parseInt(e.changedTouches[0].pageX);
-                }, false);
-
-                this.DOMElement.addEventListener("touchend", function(e) {
-                    currentTouchX = parseInt(e.changedTouches[0].pageX);
-
-                    if (currentTouchX - lastTouchX > 100) {
-                        if (!c_busy) {
-                            if( current > 0 ) current--;
-                            else current = slidesCount - 1;
-                            goToSlide(current, 0);
-                        }
-                    } else if(lastTouchX - currentTouchX > 100){
-                        if (!c_busy) {
-                            if( current < slidesCount - 1 ) current++;
-                            else current = 0;
-                            goToSlide(current, 1);
-                        }
+                if (num == slidesCount) {
+                    touchAble = false;
+                    if (lbtn !== undefined) {
+                        lbtn.hide();
                     }
-                }, false);
+                    if (rbtn !== undefined) {
+                        rbtn.hide();
+                    }
+                }
+
+                if (touchAble) {
+                    var lastTouchX;
+                    var currentTouchX;
+
+                    this.DOMElement.addEventListener("touchstart", function(e) {
+                        lastTouchX = parseInt(e.changedTouches[0].pageX);
+                    }, false);
+
+                    this.DOMElement.addEventListener("touchend", function(e) {
+                        currentTouchX = parseInt(e.changedTouches[0].pageX);
+
+                        if (currentTouchX - lastTouchX > 100) {
+                            if (!c_busy) {
+                                if (current > 0) {
+                                    current--;
+                                    goToSlide(current, 0);
+                                } else if (loopScroll) {
+                                    current = slidesCount - 1;
+                                    goToSlide(current, 0);
+                                }
+                            }
+                        } else if(lastTouchX - currentTouchX > 100){
+                            if (!c_busy) {
+                                if (current < slidesCount - 1) {
+                                    current++;
+                                    goToSlide(current, 1);
+                                }  else if (loopScroll) {
+                                    current = 0;
+                                    goToSlide(current, 1);
+                                }
+                            }
+                        }
+                    }, false);
+                }
 
 				if (stars){
 					s( s('li', stars).elements[ 0 ] ).addClass('active');
