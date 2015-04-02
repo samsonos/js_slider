@@ -17,6 +17,7 @@ var SamsonJSSlider =
         // num - количество отображаемых элементов в слайдере, если листание происходит по одному элементу.
         var num = options.num ? options.num : 1;
         var touchAble = true;
+        var keyNavigation = options.keyNavigation ? options.keyNavigation : null;
 
         // Set default scroll speed
         var scrollSpeed = 300;
@@ -183,26 +184,49 @@ var SamsonJSSlider =
                     }
                 };
 
+                var goRight = function() {
+                    if (!c_busy) {
+                        if (current < slidesCount - 1) {
+                            current++;
+                            goToSlide(current, 1);
+                        }  else if (loopScroll) {
+                            current = 0;
+                            goToSlide(current, 1);
+                        }
+                    }
+                };
+
+                var goLeft = function() {
+                    if (!c_busy) {
+                        if (current > 0) {
+                            current--;
+                            goToSlide(current, 0);
+                        } else if (loopScroll) {
+                            current = slidesCount - 1;
+                            goToSlide(current, 0);
+                        }
+                    }
+                };
+
+                if (keyNavigation) {
+                    s('html').keydown(function (e) {
+                        if (event.keyCode == 39) {
+                            goRight();
+                        }
+                        if (event.keyCode == 37) {
+                            goLeft();
+                        }
+                    });
+                }
+
 				if (rbtn)rbtn.click( function( btn )
 				{
-					if(!c_busy)
-					{
-						if( current < slidesCount - 1 ) current++;
-						else current = 0;
-
-						goToSlide(current, 1);
-					}
+                    goRight();
 				});
 
 				if (lbtn)lbtn.click( function(btn)
 				{
-					if(!c_busy)
-					{
-						if( current > 0 ) current--;
-						else current = slidesCount - 1;
-
-						goToSlide(current, 0);
-					}
+                    goLeft();
 				});
 
                 if (num == slidesCount) {
@@ -227,25 +251,9 @@ var SamsonJSSlider =
                         currentTouchX = parseInt(e.changedTouches[0].pageX);
 
                         if (currentTouchX - lastTouchX > 100) {
-                            if (!c_busy) {
-                                if (current > 0) {
-                                    current--;
-                                    goToSlide(current, 0);
-                                } else if (loopScroll) {
-                                    current = slidesCount - 1;
-                                    goToSlide(current, 0);
-                                }
-                            }
+                            goLeft();
                         } else if(lastTouchX - currentTouchX > 100){
-                            if (!c_busy) {
-                                if (current < slidesCount - 1) {
-                                    current++;
-                                    goToSlide(current, 1);
-                                }  else if (loopScroll) {
-                                    current = 0;
-                                    goToSlide(current, 1);
-                                }
-                            }
+                            goRight();
                         }
                     }, false);
                 }
