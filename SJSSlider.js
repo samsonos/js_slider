@@ -18,6 +18,8 @@ var SamsonJSSlider =
         var num = options.num ? options.num : 1;
         var touchAble = true;
         var keyNavigation = options.keyNavigation ? options.keyNavigation : null;
+        var parentWidth = sliderParent.width();
+        var sumWidth = 0;
 
         // Set default scroll speed
         var scrollSpeed = 300;
@@ -74,6 +76,38 @@ var SamsonJSSlider =
             if (lbtn !== undefined && !loopScroll) {
                 lbtn.hide();
             }
+
+            var resizingHandler = function() {
+                var newWidth =  sliderParent.width();
+                if (newWidth != parentWidth) {
+                    // Find resize offset
+                    var offset = newWidth/parentWidth;
+
+                    // Calculate new slide width
+                    slideWidth = slideWidth*offset;
+
+                    slides.each(function(li_obj){
+                        // Set new width for each slide
+                        li_obj.width(slideWidth);
+
+                        // Calculate new slider width
+                        sumWidth += slideWidth;
+                    });
+
+                    // Set new slider width
+                    s('.sjs-slider', slider).width(Math.floor(sumWidth));
+
+                    // Set new parent width
+                    parentWidth = newWidth;
+
+                    calculation(current);
+
+                    sumWidth = 0;
+                }
+            };
+
+            // Bind resizing event
+            window.addEventListener("resize", resizingHandler);
 
 			// Максимальное значение скрола
 			var slidesCount = slides.length;
@@ -134,38 +168,44 @@ var SamsonJSSlider =
 					myanimate(s('.sjs-slider', slider), point, scrollSpeed,
 							function()
 							{
-								//s.trace('end');
-								slides.each(function(eachObj){
-									eachObj.css('display', 'none');
-								});
-
-                                for (var i = 0; i <= num; i++){
-                                    var ind = id+i;
-                                    if (ind > slidesCount-1) ind -= slidesCount;
-                                    s( slides.elements[ ind ] ).css('display', 'block');
-                                    s( slides.elements[ ind ] ).css('left', slideWidth+slideWidth*i+'px');
-                                }
-
-								s('.sjs-slider', slider).css('left', -slideWidth+'px');
-
-								if(stars){
-									s('li', stars).each(function(star_obj){
-										star_obj.removeClass('active');
-									});
-
-									s( s('li', stars).elements[ id ] ).addClass('active');
-								}
-								if(options.slideHandler)options.slideHandler(slides.elements[ id ], id);
-								clearTimeout(timer);
-                                if (autoScroll) {
-                                    setTimer();
-                                }
-
+								calculation(id);
 								c_busy = false;
 							}, 50,{'middle': middleHandler}, id);
 
                     checkArrows();
 				};
+
+                var calculation = function (id) {
+                    slides.each(function(eachObj){
+                        eachObj.css('display', 'none');
+                    });
+
+                    for (var i = 0; i <= num; i++){
+                        var ind = id+i;
+
+                        if ((ind > slidesCount-1) && (num != slidesCount)) {
+                            ind -= slidesCount;
+                        }
+
+                        s( slides.elements[ ind ] ).css('display', 'block');
+                        s( slides.elements[ ind ] ).css('left', slideWidth+slideWidth*i+'px');
+                    }
+
+                    s('.sjs-slider', slider).css('left', -slideWidth+'px');
+
+                    if(stars){
+                        s('li', stars).each(function(star_obj){
+                            star_obj.removeClass('active');
+                        });
+
+                        s( s('li', stars).elements[ id ] ).addClass('active');
+                    }
+                    if(options.slideHandler)options.slideHandler(slides.elements[ id ], id);
+                    clearTimeout(timer);
+                    if (autoScroll) {
+                        setTimer();
+                    }
+                };
 
                 var checkArrows = function() {
                     if (!loopScroll && lbtn !== undefined && rbtn !== undefined) {
