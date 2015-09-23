@@ -113,7 +113,7 @@ var SamsonJSSlider =
 			var slidesCount = slides.length;
 
 			// Если в указанном контейнере вообще есть картинки
-			if( slidesCount )
+			if( slidesCount > 1 )
 			{
 				if(stars) {
                     // If there are stars
